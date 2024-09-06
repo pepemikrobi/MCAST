@@ -1,0 +1,45 @@
+all:
+  hosts:
+    podX-mgmt.sdn.lab: 
+
+  vars:
+    pod_no: X
+    vcenter_user: podX-admin@hector.lan
+    #vcenter_password: 
+
+    config_devices:
+      - hostname: POD{{ pod_no }}_R1 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.111"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R2 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.112"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R3 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.113"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R4 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.114"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R5 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.115"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R6 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.116"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R7 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.117"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R8 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.118"
+        gateway: "10.11.10{{ pod_no }}.254"
+
+      - hostname: POD{{ pod_no }}_R9 
+        mgmt_ip_address: "10.11.10{{ pod_no }}.119"
+        gateway: "10.11.10{{ pod_no }}.254"                                                

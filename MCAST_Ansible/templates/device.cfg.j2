@@ -1,0 +1,31 @@
+hostname {{ item.hostname }}
+service timestamps debug datetime msec
+service timestamps log datetime msec
+ip domain name sdn.lab
+no ip domain lookup
+aaa new-model
+aaa authentication login default local
+aaa authorization exec default local
+aaa session-id common
+username admin privilege 15 password Admin{{pod_no}}sisko$
+enable password Admin{{pod_no}}sisko$
+cdp run
+ip routing
+vrf definition MGMT
+address-family ipv4 unicast
+interface Gi1
+vrf forwarding MGMT
+ip address {{item.mgmt_ip_address}} 255.255.255.0
+no shut
+interface Gi2
+no shut
+cdp enable
+interface Gi3
+no shut
+cdp enable
+interface Gi4
+no shut
+cdp enable
+ip route vrf MGMT 0.0.0.0 0.0.0.0 {{item.gateway}}
+line vty 0 15
+exec-timeout 60

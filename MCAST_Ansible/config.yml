@@ -1,0 +1,48 @@
+---
+- name: "Set-up MCAST router config data"
+  hosts: all
+  remote_user: podX
+  gather_facts: no
+  become: true
+  tasks:
+
+  - name: Create config folders
+    ansible.builtin.file:
+      path: /tftpboot/{{ item.hostname }}
+      state: directory
+      mode: "0755"
+    with_items: "{{ config_devices }}"
+
+  - name: Compute initial device configs
+    template:
+      src: device.cfg.j2
+      dest: /tftpboot/{{ item.hostname }}/iosxe_config.txt
+      owner: root
+      group: root
+      mode: 0644
+    with_items: "{{ config_devices }}"
+
+  - name: Create ISO folder
+    ansible.builtin.file:
+      path: /tftpboot/ISO
+      state: directory
+      mode: "0755"
+  
+  - name: Create ISOs from config files
+    ansible.builtin.shell:
+      cmd: "sudo mkisofs -l -o /tftpboot/ISO/{{ item.hostname }}.iso /tftpboot/{{ item.hostname }}/iosxe_config.txt"
+      chdir: "/tftpboot/ISO"
+    with_items: "{{ config_devices }}"
+
+  - name: Copy file to datastore 
+    community.vmware.vsphere_copy:
+      hostname: "vcenter.sdn.lab"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_password }}"
+      validate_certs: false
+      src: /tftpboot/ISO/{{ item.hostname }}.iso
+      datacenter: "CSH"
+      datastore: "ESX5_3.5T_SSD"
+      path: ISO/{{ item.hostname }}.iso
+    with_items: "{{ config_devices }}"      
+    delegate_to: localhost
